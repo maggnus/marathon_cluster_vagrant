@@ -1,0 +1,37 @@
+---
+
+- name: Install packages
+  apt: name={{item}} state=installed update_cache=yes
+  with_items:
+    - mesos
+    - marathon
+
+- name: Set Zookeeper id /etc/zookeeper/conf/myid
+  template: src=zookeeper/myid.j2 dest=/etc/zookeeper/conf/myid
+
+- name: Update Zookeepr config
+  template: src=zookeeper/zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg
+
+- name: Restart Zookeper service
+  service: name=zookeeper state=restarted
+
+- name: Configure Zookeeper link for Mesos
+  template: src=mesos/zk.j2 dest=/etc/mesos/zk mode=0664
+
+- name: Set Mesos master quorum
+  template: src=mesos/quorum.j2 dest=/etc/mesos-master/quorum mode=0664
+
+- name: Stop Mesos slave service
+  service: name=mesos-slave state=stopped
+
+- name: Disable boot starting of Mesos slave service
+  copy:
+    content: "manual"
+    dest: /etc/init/mesos-slave.override
+    mode: 0644
+
+- name: Restart serives
+  service: name={{item}} state=restarted
+  with_items:
+    - mesos-master
+    - marathon

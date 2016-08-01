@@ -1,0 +1,42 @@
+---
+
+- name: Install packages
+  apt: name={{item}} state=installed update_cache=yes
+  with_items:
+    - mesos
+    - docker.io
+
+- name: Stop Zookeeper and Mesos master service
+  service: name={{item}} state=stopped
+  with_items:
+    - zookeeper
+    - mesos-master
+
+- name: Disable Zookeeper and Mesos master service
+  copy:
+    content: "manual"
+    dest: /etc/init/{{item}}.override
+    mode: 0644
+  with_items:
+    - zookeeper
+    - mesos-master
+
+- name: Configure Zookeeper link for Mesos
+  template: src=mesos/zk.j2 dest=/etc/mesos/zk mode=0664
+
+- name: Enable Docker support
+  copy:
+    content: "docker,mesos"
+    dest: /etc/mesos-slave/containerizers
+    mode: 0644
+
+- name: Increase the executor timeout
+  copy:
+    content: "5mins"
+    dest: /etc/mesos-slave/executor_registration_timeout
+    mode: 0644
+
+- name: Restart serives
+  service: name={{item}} state=restarted
+  with_items:
+    - mesos-slave

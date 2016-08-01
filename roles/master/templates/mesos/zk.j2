@@ -1,0 +1,1 @@
+zk://{% for host in groups['master'] %}{{ hostvars[host]['instance_ip'] }}:2181{% if not loop.last %},{% endif %}{% endfor %}/mesos
