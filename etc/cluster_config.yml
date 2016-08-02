@@ -20,30 +20,26 @@ providers:
 servers:
   ## Master hosts
   - name: "master-1"
-    box: "{{ box_name }}"
-    ram: 1024
+    box: "ubuntu/trusty64"
+    cpu: 1
+    ram: 512
     ip: 172.17.8.101
     role: "master"
     zk_id: 1
 
   - name: "master-2"
-    box: "{{ box_name }}"
-    ram: 1024
+    box: "ubuntu/trusty64"
+    cpu: 1
+    ram: 512
     ip: 172.17.8.102
     role: "master"
     zk_id: 2
 
-  - name: "master-3"
-    box: "{{ box_name }}"
-    ram: 1024
-    ip: 172.17.8.103
-    role: "master"
-    zk_id: 3
-
   ## Slave hosts
   - name: "slave-1"
-    box: "{{ box_name }}"
-    ram: 1024
+    box: "ubuntu/trusty64"
+    cpu: 2
+    ram: 2048
     ip: 172.17.8.201
     role: "slave"
 

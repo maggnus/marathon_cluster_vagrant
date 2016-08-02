@@ -70,6 +70,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       if providers["virtualbox"]["enable"]
         srv.vm.provider :virtualbox do |vb|
           vb.name = params["name"]
+          vb.cpus = params["cpu"]
           vb.memory = params["ram"]
         end
       end

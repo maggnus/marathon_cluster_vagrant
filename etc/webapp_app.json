@@ -1,0 +1,43 @@
+{
+  "id": "webapp",
+  "cmd": null,
+  "cpus": 2,
+  "mem": 1024,
+  "disk": 512,
+  "instances": 1,
+  "container": {
+    "docker": {
+      "image": "ingensi/play-framework",
+      "network": "HOST"
+    },
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "storage_data",
+        "persistent": {
+          "size": 512
+        },
+        "mode": "RW"
+      }
+    ]
+  },
+  "portDefinitions": [
+    {
+      "port": 0,
+      "protocol": "tcp",
+      "name": "9000"
+    }
+  ],
+  "env": {},
+  "labels": {},
+  "healthChecks": [
+    {
+      "protocol": "TCP",
+      "port": 9000,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3
+    }
+  ]
+}
