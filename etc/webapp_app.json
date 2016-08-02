@@ -1,43 +1,32 @@
 {
   "id": "webapp",
   "cmd": null,
-  "cpus": 2,
-  "mem": 1024,
-  "disk": 512,
+  "cpus": 1,
+  "mem": 256,
+  "disk": 0,
   "instances": 1,
   "container": {
     "docker": {
-      "image": "ingensi/play-framework",
-      "network": "HOST"
+      "image": "maggnus/webapp",
+      "network": "BRIDGE",
+      "privileged": false,
+      "portMappings": [
+        {
+          "containerPort": 0,
+          "protocol": "tcp",
+          "name": null,
+          "labels": null
+        }
+      ]
     },
     "type": "DOCKER",
     "volumes": [
       {
-        "containerPath": "storage_data",
-        "persistent": {
-          "size": 512
-        },
+        "hostPath": "/opt/upload",
+        "containerPath": "/usr/src/app/public/upload",
         "mode": "RW"
       }
     ]
   },
-  "portDefinitions": [
-    {
-      "port": 0,
-      "protocol": "tcp",
-      "name": "9000"
-    }
-  ],
-  "env": {},
-  "labels": {},
-  "healthChecks": [
-    {
-      "protocol": "TCP",
-      "port": 9000,
-      "gracePeriodSeconds": 300,
-      "intervalSeconds": 60,
-      "timeoutSeconds": 20,
-      "maxConsecutiveFailures": 3
-    }
-  ]
+  "env": {}
 }

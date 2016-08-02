@@ -36,6 +36,9 @@
     dest: /etc/mesos-slave/executor_registration_timeout
     mode: 0644
 
+- name: Create upload directory
+  file: path=/opt/upload state=directory mode=0755
+
 - name: Restart serives
   service: name={{item}} state=restarted
   with_items:
